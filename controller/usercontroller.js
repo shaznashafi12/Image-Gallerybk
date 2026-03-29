@@ -35,7 +35,7 @@ export const register=async(req,res)=>{
     const EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!email||!EMAIL.test(email))
       return res.status(400).json({message:"enter a valid email address"});
-    const PSS=/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+    const PSS=/^(?=.*[A-Z])(?=.*[0-9]).{8,}$/;
     if(!password||!PSS.test(password))
       return res.status(400).json({message:"Enter a correct password"})
     const existingemail=await User.findOne({email:req.body.email});
