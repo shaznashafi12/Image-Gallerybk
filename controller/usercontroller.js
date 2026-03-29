@@ -29,6 +29,15 @@ export const getAllUsers = async (req, res) => {
  
 export const register=async(req,res)=>{
   try{
+    const{name,email,password}=req.body;
+    if(!name||name.trim().length<2)
+      return res.status(400).json({message:"name must be atleast 2 characters"})
+    const EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!email||!EMAIL.test(email))
+      return res.status(400).json({message:"enter a valid email address"});
+    const PSS=/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+    if(!password||!PSS.test(password))
+      return res.status(400).json({message:"Enter a correct password"})
     const existingemail=await User.findOne({email:req.body.email});
     if(existingemail){
       return res.status(400).json('mail already exist')
@@ -51,6 +60,11 @@ export const register=async(req,res)=>{
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if(!email||!password)
+      return res.status(400).json({message:"Email and password is required"});
+    const EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!email||!EMAIL.test(email))
+      return res.status(400).json({message:"enter a valid email address"});
 
     const user = await User.findOne({ email });
     if (!user) {
